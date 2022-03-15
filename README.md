@@ -29,7 +29,7 @@ To build and deploy for the first time, run the following in your shell:
 sam build --use-container
 sam deploy --guided
 ```
-
+**Note:** If you use `sam deploy` please change to your email in `samconfig.toml`  
 The first command will build the source of your application. The second command will package and deploy your application to AWS, with a series of prompts. If you choose to save your choices to `samconfig.toml`, then you no longer will need to pass the `--guided` flag, as the SAM CLI will read your settings from it.
 
 **Note:** You will be asked for an email address: this is where notifications will be sent whenever the solution performs changes to any of your resources. The email you enter will not be used for any other purpose.
@@ -66,6 +66,7 @@ We have one EventBridge rule which must trigger at 12:00 in the local time of Li
 * `scheduled-event-adjuster:enabled` = (any value)
 * `scheduled-event-adjuster:local-timezone` = `Europe/Lisbon`
 * `scheduled-event-adjuster:local-time` = `12:00`
+* `scheduled-event-adjuster:local-to-time` = `18:00` (For range)
 
 ### Using custom tag prefixes
 

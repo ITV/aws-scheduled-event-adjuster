@@ -4,7 +4,6 @@ __pycache__
 .pytest_cache
 
 # SAM
-samconfig.toml
 .aws-sam
 
 # Other ignores

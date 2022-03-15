@@ -21,3 +21,9 @@ class ResourceProcessor:
         events must run.
         """
         return '%s:%s' % (self._tag_prefix, 'local-time')
+
+    def _get_local_to_time_tag(self):
+        """Returns the tag that specifies the local end time at which scheduled for ranges
+        events must run.
+        """
+        return '%s:%s' % (self._tag_prefix, 'local-to-time')

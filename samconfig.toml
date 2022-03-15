@@ -1,0 +1,12 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "aws-cron-job-bst-adjuster"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-1ezh4266xpl2u"
+s3_prefix = "aws-cron-job-bst-adjuster"
+region = "eu-west-1"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+parameter_overrides = "NotificationEmail=\"murali.valuri@itv.com\" TagPrefix=\"scheduled-event-adjuster\""
+image_repositories = []

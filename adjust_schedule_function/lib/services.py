@@ -80,3 +80,15 @@ class EventBridgeService:
                 The new schedule of the rule, as a valid schedule expression.
         """
         return self._client.put_rule(Name=rule_name, ScheduleExpression=schedule)
+
+    def update_rule(self, rule, schedule):
+        """Update the schedule of the rule with the specified name.
+
+        Args:
+            rule:
+                The EventBridge rule.
+            schedule:
+                The new schedule of the rule, as a valid schedule expression.
+        """
+        return self._client.put_rule(Name=rule['Name'], ScheduleExpression=schedule, Description=rule['Description'],
+                                     State=rule['State'])

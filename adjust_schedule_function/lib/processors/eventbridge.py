@@ -28,6 +28,7 @@ class EventBridgeProcessor(ResourceProcessor):
 
                 local_timezone = utils.get_tag_by_key(tags, self._get_local_timezone_tag())
                 local_time = utils.get_tag_by_key(tags, self._get_local_time_tag())
+                local_to_time = utils.get_tag_by_key(tags, self._get_local_to_time_tag())
 
                 if not local_timezone:
                     print("Skipping: EventBridge rule '{}' has no timezone defined (missing tag '{}')".format(rule['Name'],
@@ -45,13 +46,19 @@ class EventBridgeProcessor(ResourceProcessor):
                 # calculator should handle it instead.)
                 current_recurrence = rule['ScheduleExpression'][5:][:-1]
 
-                new_recurrence = self._recurrence_calculator.calculate_recurrence(current_recurrence,
-                                                                                  local_time,
-                                                                                  local_timezone)
+                if local_to_time:
+                    new_recurrence = self._recurrence_calculator.calculate_range_recurrence(current_recurrence,
+                                                                                            local_time,
+                                                                                            local_to_time,
+                                                                                            local_timezone)
+                else:
+                    new_recurrence = self._recurrence_calculator.calculate_recurrence(current_recurrence,
+                                                                                      local_time,
+                                                                                      local_timezone)
                 if new_recurrence != current_recurrence:
                     print("Calculated recurrence '{}' does not match current recurrence '{}'. This rule will be updated.".format(new_recurrence, current_recurrence))
-                    self._eventbridge_service.update_rule_schedule(rule['Name'],
-                                                                   'cron(' + new_recurrence + ')')
+                    self._eventbridge_service.update_rule(rule,
+                                                          'cron(' + new_recurrence + ')')
                     changes.append({
                         'Type': 'EventBridgeRule',
                         'ResourceName': rule['Name'],
@@ -59,6 +66,7 @@ class EventBridgeProcessor(ResourceProcessor):
                         'OriginalRecurrence': current_recurrence,
                         'NewRecurrence': new_recurrence,
                         'LocalTime': local_time,
+                        'LocalToTime': local_to_time,
                         'LocalTimezone': local_timezone
                     })
 
